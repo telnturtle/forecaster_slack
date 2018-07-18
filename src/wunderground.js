@@ -122,11 +122,14 @@ const weather = async (loc = '') => {
 
   // assemble
   let ret = '';
+  let prev_cond = '';
 
-  if (cd === 'error') {
+  if (await cd === 'error') {
     ret += `${null}, ${null}, ${null}\n${null} ${null}°C ${null} rh ${null}\n`;
   } else {
-    const cdco = cd['current_observation'];
+    console.log('cd: ', await cd); // DEBUG
+
+    const cdco = await cd['current_observation'];
     const cdotrs = cdco['observation_time_rfc822'].split(' ');
 
     ret += `${cdotfs[0].substring(-1)}, ${cdotrs[1]}, ${
@@ -134,13 +137,34 @@ const weather = async (loc = '') => {
     }\n${cdotrs[4].substring(0, 5)} ${parseInt(cdco['temp_c'])}°C ${
       cdco['weather']
     } rh ${cdco['relative_humidity']}\n`;
+    prev_cond = cdco['weather'];
   }
 
   if (hd === 'error') {
     ret += `${null} ${null}°C${null}\n`;
   } else {
-    // for...
-    ret += `${'logic'} ${'logic'}°C${'logic'}\n`;
+    let temp = '';
+    for (let hf of hd['hourly_forecast']) {
+      const hffct = hf['FCTTIME'];
+      const _h = hffct['hour'];
+      if (!(parseInt(_h) % 2 === 0 && _h > 6)) {
+        continue;
+      }
+      if (_h > 20) {
+        break;
+      }
+      // const _d = hffct['mday'];
+      // const _w = hffct['weekday_name_abbrev'];
+      // const _e = parseInt(hffct['epoch']);
+      const _t = parseInt(hf['temp']['metric']);
+      const _c = hf['condition'];
+
+      temp = _c;
+      _c = _c !== prev_cond ? ' ' + _c : '';
+      prev_cond = temp;
+
+      ret += `${_h} ${_t}°C${_c}\n`;
+    }
   }
 
   return ret;
