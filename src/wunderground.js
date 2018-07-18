@@ -127,17 +127,20 @@ const weather = async (loc = '') => {
     ret += `${null}, ${null}, ${null}\n${null} ${null}°C ${null} rh ${null}\n`;
   } else {
     const cdco = cd['current_observation'];
-    ret += `${cdco['observation_time_rfc822']
-      .split(' ')[0]
-      .substring(-1)}, ${null}, ${
+    const cdotrs = cdco['observation_time_rfc822'].split(' ');
+
+    ret += `${cdotfs[0].substring(-1)}, ${cdotrs[1]}, ${
       cdco['display_location']['full']
-    }\n${null} ${null}°C ${null} rh ${null}\n`;
+    }\n${cdotrs[4].substring(0, 5)} ${parseInt(cdco['temp_c'])}°C ${
+      cdco['weather']
+    } rh ${cdco['relative_humidity']}\n`;
   }
 
   if (hd === 'error') {
-    ret += '{} {}°C{}\n';
+    ret += `${null} ${null}°C${null}\n`;
   } else {
-    ret += 'LOGIC\n';
+    // for...
+    ret += `${'logic'} ${'logic'}°C${'logic'}\n`;
   }
 
   return ret;
