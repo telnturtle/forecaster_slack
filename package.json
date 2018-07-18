@@ -1,0 +1,27 @@
+{
+  "name": "forecaster_slack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/telnturtle/forecaster_slack.git"
+  },
+  "author": "Eom Hwiyong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/telnturtle/forecaster_slack/issues"
+  },
+  "homepage": "https://github.com/telnturtle/forecaster_slack#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "gulp-babel": "^7.0.1"
+  }
+}
