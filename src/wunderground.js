@@ -67,6 +67,29 @@ const hourly = (loc = '') => {
       });
   });
 };
+/**
+ *
+ * @param {string} weekday
+ */
+const trans_weekday = weekday => {
+  if (weekday === 'Sun') {
+    return '일요일';
+  } else if (weekday === 'Mon') {
+    return '월요일';
+  } else if (weekday === 'Tue') {
+    return '화요일';
+  } else if (weekday === 'Wed') {
+    return '수요일';
+  } else if (weekday === 'Thu') {
+    return '목요일';
+  } else if (weekday === 'Fri') {
+    return '금요일';
+  } else if (weekday === 'Sat') {
+    return '토요일';
+  } else {
+    return '요일';
+  }
+};
 
 /**
  *
@@ -77,7 +100,8 @@ const weather = async (loc = '') => {
   let maybe_new_location = '';
   let cd = 'error';
   try {
-    res = await condition(loc);
+    const res = await condition(loc);
+    // console.log('res: ', res); // ok
     if ('error' in res) {
       // 에러 결과
       1 / 0;
@@ -89,7 +113,7 @@ const weather = async (loc = '') => {
           if ('error' in res_) {
             1 / 0;
           } else {
-            cd = res_.data;
+            cd = res_;
           }
         })
         .catch(err => {
@@ -97,7 +121,8 @@ const weather = async (loc = '') => {
         });
     } else {
       // 정상 결과
-      cd = res.data;
+      cd = res;
+      // console.log('cd, res:', cd, res); // DEBUG
     }
   } catch (exc) {
     cd = 'error';
@@ -107,14 +132,14 @@ const weather = async (loc = '') => {
   maybe_new_location = maybe_new_location === '' ? loc : maybe_new_location;
   let hd = 'error';
   try {
-    res = await hourly(loc);
+    const res = await hourly(loc);
 
     if ('error' in res) {
       // 에러 결과
       1 / 0;
     } else {
       // 정상 결과
-      hd = res.data;
+      hd = res;
     }
   } catch (exc) {
     hd = 'error';
@@ -124,19 +149,23 @@ const weather = async (loc = '') => {
   let ret = '';
   let prev_cond = '';
 
-  if (await cd === 'error') {
+  // console.log('cd, hd: ', cd, hd);
+
+  if (cd === 'error') {
     ret += `${null}, ${null}, ${null}\n${null} ${null}°C ${null} rh ${null}\n`;
   } else {
-    console.log('cd: ', await cd); // DEBUG
-
-    const cdco = await cd['current_observation'];
+    const cdco = cd['current_observation'];
     const cdotrs = cdco['observation_time_rfc822'].split(' ');
 
-    ret += `${cdotfs[0].substring(-1)}, ${cdotrs[1]}, ${
-      cdco['display_location']['full']
-    }\n${cdotrs[4].substring(0, 5)} ${parseInt(cdco['temp_c'])}°C ${
-      cdco['weather']
-    } rh ${cdco['relative_humidity']}\n`;
+    const wd = trans_weekday(cdotrs[0].slice(0, -1));
+    const d = cdotrs[1];
+    const city = cdco['display_location']['city'] === 'Seoul' ? '서울' : cdco['display_location']['city'];
+    const time = cdotrs[4].slice(0, 5);
+    const temp_c = parseInt(cdco['temp_c']);
+    const cond = cdco['weather'];
+    const rh = cdco['relative_humidity'];
+
+    ret += `${wd}, ${d}, ${city}\n${time} ${temp_c}°C ${cond} rh ${rh}\n`;
     prev_cond = cdco['weather'];
   }
 
@@ -146,24 +175,24 @@ const weather = async (loc = '') => {
     let temp = '';
     for (let hf of hd['hourly_forecast']) {
       const hffct = hf['FCTTIME'];
-      const _h = hffct['hour'];
-      if (!(parseInt(_h) % 2 === 0 && _h > 6)) {
+      const h = ('0' + hffct['hour']).slice(-2);
+      if (!(parseInt(h) % 2 === 0 && h > 6)) {
         continue;
       }
-      if (_h > 20) {
+      if (h > 20) {
         break;
       }
       // const _d = hffct['mday'];
       // const _w = hffct['weekday_name_abbrev'];
       // const _e = parseInt(hffct['epoch']);
-      const _t = parseInt(hf['temp']['metric']);
-      const _c = hf['condition'];
+      const temp_metric = parseInt(hf['temp']['metric']);
+      let cond = hf['condition'];
 
-      temp = _c;
-      _c = _c !== prev_cond ? ' ' + _c : '';
+      temp = cond;
+      cond = cond !== prev_cond ? ' ' + cond : '';
       prev_cond = temp;
 
-      ret += `${_h} ${_t}°C${_c}\n`;
+      ret += `${h} ${temp_metric}°C${cond}\n`;
     }
   }
 
