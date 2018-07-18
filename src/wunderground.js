@@ -192,7 +192,7 @@ const weather = async (loc = '') => {
       cond = cond !== prev_cond ? ' ' + cond : '';
       prev_cond = temp;
 
-      ret += `${h} ${temp_metric}°C${cond}\n`;
+      ret += `${h} ${temp_metric}°c${cond}\n`;
     }
   }
 
