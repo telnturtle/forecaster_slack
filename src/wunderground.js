@@ -207,7 +207,8 @@ const weather = async (loc = '') => {
  * @param {string} loc
  */
 const weather_emoji = async (loc = '') => {
-  return await weather(loc);
+  const result = await weather(loc);
+  return result.replace('Rain', 'Rain☔' ).replace('Thunderstorm', 'Thunderstorm⛈').replace('Cloudy', 'Cloudy☁️').replace('Clouds', 'Clouds☁️').replace('Clouds', 'Clouds☁️').replace('Clear', 'Clear☀️').replace('Overcast', 'Overcast☁️');
 };
 
 // export { condition };
