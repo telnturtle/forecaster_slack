@@ -1,7 +1,9 @@
-const { condition, hourly, weather } = require('./src/wunderground');
+const { weather_emoji } = require('./src/wunderground');
+const cron = require('node-cron');
 
-// console.log(condition('seoul'));
-// hourly('seoul').then(data => {
-//   console.log('data: ', data);
-// });
-weather('seoul').then(result => console.log(result));
+const job = async () => {
+  const p = await weather_emoji('seoul');
+  console.log(p);
+};
+
+cron.schedule('0 21 * * 0-4', job); // cron.schedule('0 6 * * 1-5', job);

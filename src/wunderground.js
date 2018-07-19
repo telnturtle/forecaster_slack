@@ -159,7 +159,10 @@ const weather = async (loc = '') => {
 
     const wd = trans_weekday(cdotrs[0].slice(0, -1));
     const d = cdotrs[1];
-    const city = cdco['display_location']['city'] === 'Seoul' ? '서울' : cdco['display_location']['city'];
+    const city =
+      cdco['display_location']['city'] === 'Seoul'
+        ? '서울'
+        : cdco['display_location']['city'];
     const time = cdotrs[4].slice(0, 5);
     const temp_c = parseInt(cdco['temp_c']);
     const cond = cdco['weather'];
@@ -199,5 +202,13 @@ const weather = async (loc = '') => {
   return ret;
 };
 
+/**
+ *
+ * @param {string} loc
+ */
+const weather_emoji = async (loc = '') => {
+  return await weather(loc);
+};
+
 // export { condition };
-module.exports = { condition, hourly, weather };
+module.exports = { condition, hourly, weather, weather_emoji };
