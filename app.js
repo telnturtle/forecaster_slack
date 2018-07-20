@@ -3,8 +3,9 @@ const { curl } = require('./src/slack');
 const cron = require('node-cron');
 
 const job = async () => {
-  const p = await weather_emoji('seoul');
-  curl('날씨 발송 테스트입니다.\n' + p);
+  const payload = await weather_emoji('seoul');
+  curl(payload);
 };
 
-cron.schedule('0 21 * * 0-4', job); // cron.schedule('0 6 * * 1-5', job);
+cron.schedule('0 21 * * 0-4', job); // server's time zone: UTC+00:00
+// cron.schedule('0 6 * * 1-5', job); // KST ( UTC+09:00 )
