@@ -3,9 +3,9 @@ const { curl } = require('./src/slack');
 const schedule = require('node-schedule');
 
 const job = async () => {
-  const p = await weather_emoji('seoul');
-  curl(p).then(res => {
-    console.log(p);
+  const payload = await weather_emoji('seoul');
+  curl(payload).then(res => {
+    console.log(payload);
   });
 };
 

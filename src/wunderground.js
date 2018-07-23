@@ -15,7 +15,7 @@ const url_forecast = loc =>
 
 // query functions
 /**
- *
+ * get condition data
  * @param {string} loc
  */
 const condition = (loc = '') => {
@@ -36,13 +36,13 @@ const condition = (loc = '') => {
       })
       .catch(err => {
         console.log('reject in condition');
-        reject(res);
+        reject(err);
       });
   });
 };
 
 /**
- *
+ * get hourly data
  * @param {string} loc
  */
 const hourly = (loc = '') => {
@@ -63,10 +63,11 @@ const hourly = (loc = '') => {
       })
       .catch(err => {
         console.log('reject in hourly');
-        reject(res);
+        reject(err);
       });
   });
 };
+
 /**
  *
  * @param {string} weekday
@@ -92,7 +93,7 @@ const trans_weekday = weekday => {
 };
 
 /**
- *
+ * assemble paylaod
  * @param {string} loc
  */
 const weather = async (loc = '') => {
@@ -203,11 +204,18 @@ const weather = async (loc = '') => {
 };
 
 /**
- *
+ * add emoji to assembled payload
  * @param {string} loc
  */
 const weather_emoji = async (loc = '') => {
-  return await weather(loc);
+  const result = await weather(loc);
+  return result
+    .replace('Rain', 'Rain☔')
+    .replace('Thunderstorm', 'Thunderstorm⛈')
+    .replace('Cloudy', 'Cloudy☁️')
+    .replace('Clouds', 'Clouds☁️')
+    .replace('Clear', 'Clear☀️')
+    .replace('Overcast', 'Overcast☁️');
 };
 
 // export { condition };
