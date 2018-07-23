@@ -9,5 +9,5 @@ const job = async () => {
   });
 };
 
-cron.schedule('0 21 * * 0-4', job); // GMT
-// cron.schedule('0 6 * * 1-5', job); // KST
+const ssj = schedule.scheduleJob('0 21 * * 0-4', job); // GMT
+// const ssj = schedule.scheduleJob('0 6 * * 1-5', job); // KST
