@@ -210,12 +210,12 @@ const weather = async (loc = '') => {
 const weather_emoji = async (loc = '') => {
   const result = await weather(loc);
   return result
-    .replace('Rain', 'Rain☔')
-    .replace('Thunderstorm', 'Thunderstorm⛈')
-    .replace('Cloudy', 'Cloudy☁️')
-    .replace('Clouds', 'Clouds☁️')
-    .replace('Clear', 'Clear☀️')
-    .replace('Overcast', 'Overcast☁️');
+    .replace(/Rain/gi, 'Rain☔')
+    .replace(/Thunderstorm/gi, 'Thunderstorm⛈')
+    .replace(/Cloudy/gi, 'Cloudy☁️')
+    .replace(/Clouds/gi, 'Clouds☁️')
+    .replace(/Clear/gi, 'Clear☀️')
+    .replace(/Overcast/gi, 'Overcast☁️');
 };
 
 // export { condition };
