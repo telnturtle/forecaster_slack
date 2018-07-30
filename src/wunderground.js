@@ -169,7 +169,7 @@ const weather = async (loc = '') => {
     const cond = cdco['weather'];
     const rh = cdco['relative_humidity'];
 
-    ret += `${wd}, ${d}, ${city}\n${time} ${temp_c}°C ${cond} rh ${rh}\n`;
+    ret += `${wd}, ${d}, ${city}\n${time} ${temp_c}°c ${cond} rh ${rh}\n`;
     prev_cond = cdco['weather'];
   }
 

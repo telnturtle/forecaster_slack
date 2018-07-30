@@ -16,11 +16,7 @@ const job = async () => {
 console.log('Forecaster\n', Date(), '\n');
 
 try {
-  const ssj = schedule.scheduleJob('0 21 * * 0-4', job); // GMT
-  // const ssj = schedule.scheduleJob('0 6 * * 1-5', job); // KST
-  // const ssj2 = schedule.scheduleJob('*/1 * * * *', () => {
-  //   console.log(Date());
-  // }); // KST
+  const ssj = schedule.scheduleJob('0 21 * * 0-4', job); // GMT // ('0 6 * * 1-5', job); // KST
 } catch (e) {
   console.log('in loop: ', e);
 }
